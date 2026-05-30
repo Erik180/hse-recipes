@@ -72,3 +72,36 @@ class DietaryRecipe(Recipe):
 
     def __str__(self):
         return f"[{self.diet_type}] " + super().__str__()
+    
+
+class ShoppingList:
+    def __init__(self):
+        self._items = []
+
+    def add_recipe(self, recipe: Recipe, portions: float):
+        if portions <= 0:
+            raise ValueError("Количество порций должно быть положительным")
+        scaled = recipe.scale(portions)
+        for ingredient in scaled.ingredients:
+            self._items.append((ingredient, recipe.title))
+
+    def remove_recipe(self, title: str):
+        self._items = [(ing, t) for ing, t in self._items if t != title]
+
+    def get_list(self):
+        totals = {}
+        for ingredient, _ in self._items:
+            key = (ingredient.name, ingredient.unit)
+            if key in totals:
+                totals[key] += ingredient.quantity
+            else:
+                totals[key] = ingredient.quantity
+        result = []
+        for (name, unit), quantity in totals.items():
+            result.append(Ingredient(name, quantity, unit))
+        return sorted(result, key=lambda x: x.name)
+
+    def __add__(self, other: 'ShoppingList'):
+        new_list = ShoppingList()
+        new_list._items = self._items.copy() + other._items.copy()
+        return new_list
