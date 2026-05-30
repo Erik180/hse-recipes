@@ -4,18 +4,16 @@
 
 ## Установка
 
-```bash
+git clone https://github.com/Erik180/hse-recipes.git
+cd hse-recipes
 pip install -r requirements.txt
-```
 
 ## Использование
 
 Запуск тестов:
 
-```bash
 pytest
-```
 
 ## Автор
 
-Гисматуллин Эрик, НИУ ВШЭ
+Гисматуллин Эрик, ББИ2505
